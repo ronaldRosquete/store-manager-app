@@ -1,0 +1,130 @@
+"use client";
+
+import {
+  AppleIcon,
+  AudioWaveform,
+  ChartColumnStacked,
+  Command,
+  GalleryVerticalEnd,
+  Handshake,
+  LayoutDashboard,
+  MessageSquareWarning,
+  TruckElectricIcon,
+  Undo2,
+} from "lucide-react";
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import { NavUser } from "./nav-user";
+import { TeamSwitcher } from "./team-switcher";
+import { NavMain } from "./nav-main";
+import Link from "next/link";
+
+// User and team data
+const data = {
+  user: {
+    name: "Ronald Rosquete",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  teams: [
+    {
+      name: "StoreZone",
+      logo: GalleryVerticalEnd,
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free",
+    },
+  ],
+};
+
+// Menu items.
+const items = [
+  {
+    title: "Dashboard",
+    url: "#",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Products",
+    url: "#",
+    icon: AppleIcon,
+  },
+  {
+    title: "Category",
+    url: "#",
+    icon: ChartColumnStacked,
+  },
+  {
+    title: "Delivery",
+    url: "#",
+    icon: TruckElectricIcon,
+  },
+  {
+    title: "Reports",
+    url: "#",
+    icon: MessageSquareWarning,
+  },
+  {
+    title: "Suppliers",
+    url: "#",
+    icon: Handshake,
+  },
+  {
+    title: "Returns",
+    url: "#",
+    icon: Undo2,
+  },
+];
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <TeamSwitcher teams={data.teams} />
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Inventario</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
+}
