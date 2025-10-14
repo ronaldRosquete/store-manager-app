@@ -61,37 +61,37 @@ const data = {
 const items = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/dashboard",
     icon: LayoutDashboard,
   },
   {
     title: "Products",
-    url: "#",
+    url: "/dashboard/products",
     icon: AppleIcon,
   },
   {
     title: "Category",
-    url: "#",
+    url: "/dashboard/category",
     icon: ChartColumnStacked,
   },
   {
     title: "Delivery",
-    url: "#",
+    url: "/dashboard/delivery",
     icon: TruckElectricIcon,
   },
   {
     title: "Reports",
-    url: "#",
+    url: "/dashboard/reports",
     icon: MessageSquareWarning,
   },
   {
     title: "Suppliers",
-    url: "#",
+    url: "/dashboard/suppliers",
     icon: Handshake,
   },
   {
     title: "Returns",
-    url: "#",
+    url: "/dashboard/returns",
     icon: Undo2,
   },
 ];
@@ -110,10 +110,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
