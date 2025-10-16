@@ -25,10 +25,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
 import { TeamSwitcher } from "./team-switcher";
-import { NavMain } from "./nav-main";
 import Link from "next/link";
 
 // User and team data

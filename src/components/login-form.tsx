@@ -27,7 +27,7 @@ export function LoginForm({
     const password = (form.elements.namedItem("password") as HTMLInputElement)
       .value;
 
-    //Validacion simple
+    
     if (email === "ronald@gmail.com" && password === "1234") {
       localStorage.setItem("loggedIn", "true");
       router.push("/dashboard");
@@ -79,7 +79,7 @@ export function LoginForm({
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder="name@example.com"
                     required
                   />
                 </div>
@@ -101,7 +101,7 @@ export function LoginForm({
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <a href="signup" className="underline underline-offset-4">
                   Sign up
                 </a>
               </div>

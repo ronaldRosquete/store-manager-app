@@ -15,8 +15,19 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { usePathname } from "next/navigation";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const section = pathname.split("/").pop();
+  const formattedSection = section
+    ? section.charAt(0).toUpperCase() + section.slice(1)
+    : "Dashboard"; // valor por defecto si no hay sección
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -27,11 +38,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+                <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Sección actual</BreadcrumbPage>
+                <BreadcrumbPage>{formattedSection}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
