@@ -18,23 +18,30 @@ export function LoginForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const router = useRouter();
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const form = e.currentTarget as HTMLFormElement;
-    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
-    const password = (form.elements.namedItem("password") as HTMLInputElement)
-      .value;
 
-    
-    if (email === "ronald@gmail.com" && password === "1234") {
-      localStorage.setItem("loggedIn", "true");
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    console.log(data); 
+
+    if (data.success) {
       router.push("/dashboard");
     } else {
-      setError("Usuario o password incorrecto");
+      if (data.error.includes("Correo")) setEmailError(data.error);
+      else if (data.error.includes("Contraseña")) setPasswordError(data.error);
     }
   };
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -46,7 +53,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLogin}>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <Button variant="outline" className="w-full">
@@ -79,9 +86,22 @@ export function LoginForm({
                   <Input
                     id="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (emailError) setEmailError(""); // Limpia el error al escribir
+                    }}
                     placeholder="name@example.com"
                     required
+                    className={
+                      emailError
+                        ? "border-red-500 focus-visible:ring-red-500"
+                        : ""
+                    }
                   />
+                  {emailError && (
+                    <p className="text-sm text-red-500">{emailError}</p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
@@ -93,7 +113,24 @@ export function LoginForm({
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (passwordError) setPasswordError(""); // Limpia el error al escribir
+                    }}
+                    required
+                    className={
+                      passwordError
+                        ? "border-red-500 focus-visible:ring-red-500"
+                        : ""
+                    }
+                  />
+                  {passwordError && (
+                    <p className="text-sm text-red-500">{passwordError}</p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full">
                   Login

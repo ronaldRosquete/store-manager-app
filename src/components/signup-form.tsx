@@ -28,50 +28,50 @@ export function SignupForm({
   const { toast } = useToast();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleClick = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
+    setEmailError("");
+    setPasswordError("");
 
-  try {
-    const res = await fetch(
-      "https://68f046d30b966ad500326005.mockapi.io/api/v1/users",
-      {
+    try {
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      }
-    );
-
-    if (res.ok) {
-      toast({
-        title: "User created successfully",
-        description: "Redirecting to the Login...",
-        duration: 2000, // desaparece automáticamente en 2 segundos
+        body: JSON.stringify({ email: form.email, password: form.password }),
       });
 
-      setForm({ fullname: "", email: "", password: "" });
+      const data = await res.json();
 
-      // Espera 2 segundos antes de redirigir
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
-    } else {
-      setStatus("Error al registrar");
+      if (data.success) {
+        router.push("/dashboard");
+      } else {
+        if (data.error?.toLowerCase().includes("correo")) {
+          setEmailError(data.error);
+        } else if (data.error?.toLowerCase().includes("contraseña")) {
+          setPasswordError(data.error);
+        }
+      }
+    } catch (err) {
+      console.error("Error al registrar:", err);
+      toast({
+        title: "Error",
+        description: "Ocurrió un error al registrar. Intenta nuevamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    setStatus("Error de conexión");
-  } finally {
-    // ✅ Desactiva el estado de carga después de terminar
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
